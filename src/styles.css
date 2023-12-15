@@ -1,0 +1,15 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --black-1: #000E1B;
+  --black-2: #051B2F;
+  --black-3: #2D3841;
+
+  --orange-1: #F59134;
+  --orange-2: #D1731B;
+
+  font-size: 62.5%;
+}
