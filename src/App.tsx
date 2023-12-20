@@ -13,7 +13,7 @@ currentMonitor().then(monitor => {
 });
 
 function App() {
-  const rounter = createBrowserRouter([
+  const router = createBrowserRouter([
     {
       path:'/',
       element: <Home />
@@ -23,7 +23,7 @@ function App() {
   return (
     <React.StrictMode>
       <RouterProvider
-        router={rounter}
+        router={router}
       />
     </React.StrictMode>
   );
