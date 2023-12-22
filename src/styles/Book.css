@@ -1,0 +1,55 @@
+.book-container {
+  display: block;
+  width: 150px;
+  height: 200px;
+  background-color: #F4F4F4;
+  border: 2px solid var(--orange-2);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.185);
+  margin-bottom: 10px;
+  transition: .2s;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.book-container:hover {
+  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.185);
+  transform: scale(1.1);
+}
+
+.book-edit-container {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.book-edit-container button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--orange-2);
+  padding: 1px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.book-edit-container button:hover {
+  border: 1px solid var(--orange-1);
+}
+
+.book-name {
+  font-size: 2rem;
+  font-family: sans-serif;
+  font-weight: 400;
+  text-align: center;
+}
+
+.book-image {
+  width: 150px;
+  height: 200px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
