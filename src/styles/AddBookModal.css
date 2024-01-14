@@ -1,0 +1,130 @@
+.modal-container {
+  display: grid;
+  grid-template-columns: 1fr .2fr 10px;
+  gap: 10px;
+  font-size: 1.6rem;
+  font-family: sans-serif;
+  padding: 15px;
+  background-color: white;
+  position: absolute;
+  top: 250px;
+  left: 32%;
+  z-index: 15;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.103);
+}
+
+.modal-inputs-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.modal-container h2,
+.modal-inputs-container h2 {
+  font-size: 1.8rem;
+  font-weight: 400;
+}
+
+.modal-inputs-container input {
+  display: block;
+  width: 280px;
+  border-radius: 5px;
+  background-color: #E7E4E4;
+  font-size: 1.6rem;
+  padding: 5px 10px;
+  border: none;
+  outline: 0px;
+}
+
+.modal-inputs-container span {
+  max-width: 200px;
+  overflow-x: hidden;
+}
+
+.modal-categ-container {
+  display: grid;
+  grid-template-columns: 1fr .4fr;
+  gap: 30px;
+}
+
+.modal-categ-container ul {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 5px;
+  max-height: 150px;
+}
+
+.modal-button, 
+.modal-categ {
+  display: block;
+  background-color: var(--black-3);
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.modal-categ {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--black-2);
+  max-width: fit-content;
+}
+
+.modal-categ button,
+.create-categ button  {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.categ-buttons-container > div {
+  margin: 10px 0;
+}
+
+.create-categ input {
+  font-size: 1.4rem;
+  max-width: 130px;
+  background: transparent;
+  border: none;
+}
+
+.create-categ input::placeholder {
+  color: white;
+}
+
+.create-categ {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.modal-image {
+  display: block;
+  background-color: black;
+  width: 160px;
+  height: 180px;
+  margin-bottom: 10px;
+}
+
+.modal-button.center {
+  margin: 0 auto;
+}
+
+.modal-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
+
+.modal-menu li {
+  padding: 2px;
+  cursor: pointer;
+}
