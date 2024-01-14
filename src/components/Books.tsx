@@ -2,9 +2,13 @@ import React from 'react'
 import Book from './Book'
 import "../styles/Books.css";
 
-const Books = () => {
+interface BooksInterface {
+  isModalActive: boolean
+}
+
+const Books = (props:BooksInterface) => {
   return (
-    <ul className='books-container'>
+    <ul className={`books-container ${props.isModalActive && "blur-background"}`}>
       <li>
         <Book />
       </li>

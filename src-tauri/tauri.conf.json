@@ -17,8 +17,9 @@
         "setPosition": true
       },
       "shell": {
-        "all": false,
-        "open": true
+        "all": true,
+        "execute": false,
+        "sidecar": false
       }
     },
     "bundle": {

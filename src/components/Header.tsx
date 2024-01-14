@@ -5,7 +5,11 @@ import ImportIcon from '../assets/import-icon.svg';
 import ExportIcon from '../assets/export-icon.svg';
 import '../styles/Header.css';
 
-export const Header = () => {
+interface Header {
+  setIsModalActive: (value:boolean) => void
+}
+
+export const Header = ({setIsModalActive}:Header) => {
   return (
     <header>
       <div className='search-container'>
@@ -32,7 +36,7 @@ export const Header = () => {
         </ul>
       </div>
       <ul className='options-menu-container'>
-        <li>
+        <li onClick={() => setIsModalActive(true)}>
           <img src={AddButton} alt="" />
         </li>
         <li>

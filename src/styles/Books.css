@@ -4,4 +4,17 @@
   align-items: center;
   gap: 30px;
   padding: 30px 60px;
+  position: relative;
+}
+
+.blur-background::after {
+  content: "";
+  display: block;
+  position: absolute;
+  background-color: rgba(128, 128, 128, 0.137);
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  transition: .4;
 }
