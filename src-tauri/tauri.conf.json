@@ -20,6 +20,9 @@
         "all": true,
         "execute": false,
         "sidecar": false
+      },
+      "dialog": {
+        "open": true
       }
     },
     "bundle": {
