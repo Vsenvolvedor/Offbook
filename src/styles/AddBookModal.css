@@ -91,6 +91,7 @@
 .create-categ input {
   font-size: 1.4rem;
   max-width: 130px;
+  color: white;
   background: transparent;
   border: none;
 }
