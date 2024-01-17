@@ -13,7 +13,7 @@ export const Home = () => {
       <Books 
         isModalActive={isModalActive}
       />
-      {isModalActive && <AddBookModal />}
+      {isModalActive && <AddBookModal setIsModalActive={setIsModalActive} />}
     </div>
   )
 }
