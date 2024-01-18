@@ -5,7 +5,7 @@ import MoreIcon from '../assets/more-icon.svg'
 import ConfirmIcon from '../assets/confirm-icon.svg'
 import TrashIcon from '../assets/trash-icon.svg'
 import '../styles/AddBookModal.css'
-import { useMemo, useState } from 'react'
+import { ChangeEvent, useMemo, useRef, useState } from 'react'
 import { open } from '@tauri-apps/api/dialog'
 
 const categorias = [
@@ -23,13 +23,13 @@ const AddBookModal = ({setIsModalActive}:AddBookModal) => {
   const [categories,setCategories] = useState<Array<string>>(categorias);
   const [newCategorie, setNewCategorie] = useState<string>('');
   const [bookPath, setBookPath] = useState<string | null | string[]>('');
+  const thumbImageRef = useRef<HTMLImageElement>(null);
   const aliasBookPath = useMemo(() => {
     if(typeof bookPath !== 'string') return null;
     const separatedPath = bookPath?.split(`\\`);
     if(!separatedPath) return null;
     return separatedPath[separatedPath.length - 1];
   }, [bookPath]); 
-
   function handleName({target}:any) {
     setName(target.value);
   }
@@ -67,6 +67,13 @@ const AddBookModal = ({setIsModalActive}:AddBookModal) => {
   function deleteCategorie({target}:any) {
     if(target.value === '') return;
     setCategories(categories.filter(categ => categ !== target.value));
+  }
+
+  function handleThumbImage(e:ChangeEvent) {
+    const { files } = e.target as HTMLInputElement;
+    if(!files) return;
+    const fileUrl = URL.createObjectURL(files[0]);
+    thumbImageRef.current ? thumbImageRef.current.src = fileUrl : null;
   }
 
   return (
@@ -120,8 +127,9 @@ const AddBookModal = ({setIsModalActive}:AddBookModal) => {
           </div>
       </div>
       <div>
-        <img className='modal-image' src="" />
-        <button className='modal-button center'>Adicionar thumb</button>
+        <img ref={thumbImageRef} className='modal-image' src="" />
+        <label className='modal-button center' htmlFor="thumb-image">Adicionar thumb</label>
+        <input onChange={handleThumbImage} type="file" name="" id="thumb-image" accept="image/*" />
       </div>
       <ul className='modal-menu'>
         <li onClick={() => setIsModalActive(false)} ><img src={XMarkBlack} alt="" /></li>
