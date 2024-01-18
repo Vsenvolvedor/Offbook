@@ -115,6 +115,7 @@
 }
 
 .modal-button.center {
+  text-align: center;
   margin: 0 auto;
 }
 
@@ -128,4 +129,8 @@
 .modal-menu li {
   padding: 2px;
   cursor: pointer;
+}
+
+#thumb-image {
+  display: none;
 }
