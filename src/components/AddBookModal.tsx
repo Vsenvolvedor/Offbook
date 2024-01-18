@@ -5,7 +5,8 @@ import MoreIcon from '../assets/more-icon.svg'
 import ConfirmIcon from '../assets/confirm-icon.svg'
 import TrashIcon from '../assets/trash-icon.svg'
 import '../styles/AddBookModal.css'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { open } from '@tauri-apps/api/dialog'
 
 const categorias = [
   'asdad',
@@ -21,9 +22,28 @@ const AddBookModal = ({setIsModalActive}:AddBookModal) => {
   const [name,setName] = useState<string>('');
   const [categories,setCategories] = useState<Array<string>>(categorias);
   const [newCategorie, setNewCategorie] = useState<string>('');
+  const [bookPath, setBookPath] = useState<string | null | string[]>('');
+  const aliasBookPath = useMemo(() => {
+    if(typeof bookPath !== 'string') return null;
+    const separatedPath = bookPath?.split(`\\`);
+    if(!separatedPath) return null;
+    return separatedPath[separatedPath.length - 1];
+  }, [bookPath]); 
 
   function handleName({target}:any) {
     setName(target.value);
+  }
+
+  async function loadBookPath() {
+    const filePath= await open({
+      multiple: false,
+      filters: [{
+        name: 'Pdf',
+        extensions: ['pdf']
+      }]
+    })
+
+    setBookPath(filePath);
   }
   
   function handleNewCategorie({target}:any){
@@ -48,7 +68,7 @@ const AddBookModal = ({setIsModalActive}:AddBookModal) => {
     if(target.value === '') return;
     setCategories(categories.filter(categ => categ !== target.value));
   }
-  console.log('relaod')
+
   return (
     <div className='modal-container'>
       <div>
@@ -58,8 +78,8 @@ const AddBookModal = ({setIsModalActive}:AddBookModal) => {
         </div>
         <div className='modal-inputs-container'>
           <h2>Arquivo:</h2>
-          <span></span>
-          <button className='modal-button'>Carregar</button>
+          <span>{aliasBookPath}</span>
+          <button onClick={loadBookPath} className='modal-button'>Carregar</button>
         </div>
         <h2>Categorias:</h2>
         <div className='modal-categ-container'>
