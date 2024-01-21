@@ -1,15 +1,27 @@
-import React from 'react'
 import SearchIcon from '../assets/search-icon.svg';
 import AddButton from '../assets/add-button.svg';
 import ImportIcon from '../assets/import-icon.svg';
 import ExportIcon from '../assets/export-icon.svg';
 import '../styles/Header.css';
+import { useEffect, useState } from 'react';
+import readingCategoriesData from '../helper/readCategoryData';
 
 interface Header {
   setIsModalActive: (value:boolean) => void
 }
 
 export const Header = ({setIsModalActive}:Header) => {
+  const [categories, setCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    readingCategoriesData()
+    .then((data) => {
+      if(!data) return;
+      setCategories(JSON.parse(data));
+    })
+  }, [])
+
+
   return (
     <header>
       <div className='search-container'>
@@ -21,18 +33,16 @@ export const Header = ({setIsModalActive}:Header) => {
           Filtrar por categoria
         </h1>
         <ul>
-          <li>
-            categoria
-          </li>
-          <li>
-            categoria
-          </li>
-          <li>
-            categoria
-          </li>
-          <li>
-            categoria
-          </li>
+          {
+            categories.map((categ) => {
+
+              return (
+                <li>
+                  {categ}
+                </li>
+              )
+            })
+          }
         </ul>
       </div>
       <ul className='options-menu-container'>
