@@ -23,6 +23,19 @@
       },
       "dialog": {
         "open": true
+      },
+      "fs": {
+        "copyFile": true,
+        "createDir": true,
+        "exists": true,
+        "readFile": true,
+        "writeFile": true,
+        "scope": [
+          "$APPDATA/data/arquives",
+          "$APPDATA/data/json",
+          "$APPDATA/data/arquives/*",
+          "$APPDATA/data/json/*"
+        ]
       }
     },
     "bundle": {
