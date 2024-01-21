@@ -52,7 +52,21 @@ header {
   gap: 15px;
   font-size: 1.6rem;
   text-transform: uppercase;
+  margin: 0 auto;
   margin-top: 15px;
+  max-width: 600px;
+  overflow-x: auto;
+}
+
+.category-container ul::-webkit-scrollbar {
+  background: transparent;
+  height: 4px;
+}
+
+.category-container ul::-webkit-scrollbar-thumb {
+  display: block;
+  background-color: white;
+  border-radius: 10px;
 }
 
 .category-container ul li {
