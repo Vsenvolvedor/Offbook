@@ -3,7 +3,8 @@ import '../styles/AddBookModal.css'
 import SelectionIcon from '../assets/selection-icon.svg'
 import MoreIcon from '../assets/more-icon.svg'
 import XMarkWhite from '../assets/x-mark-white.svg'
-import { BaseDirectory, exists, readTextFile, writeFile } from '@tauri-apps/api/fs'
+import { BaseDirectory, writeFile } from '@tauri-apps/api/fs'
+import readingCategoriesData, { categorieDataPath } from '../helper/readCategoryData'
 interface BookModalCategories {
   selectedCategories: string[]
   setSelectedCategories: (value:string[]) => void
@@ -12,18 +13,6 @@ interface BookModalCategories {
 const BookModalCategories = ({selectedCategories,setSelectedCategories}:BookModalCategories) => {
   const [categories,setCategories] = useState<Array<string>>([]);
   const [newCategorie, setNewCategorie] = useState<string>('');
-  const categorieDataPath = 'data\\json\\categories.json';
-
-  async function readingCategoriesData() {
-    const response = await exists(categorieDataPath, {
-      dir: BaseDirectory.AppData
-    })
-    if(!response) return null;
-    const contents = await readTextFile(categorieDataPath, {
-      dir: BaseDirectory.AppData
-    });
-    return contents;
-  }
 
   async function createCategorie() {
     if(newCategorie ===  '') return;
