@@ -36,8 +36,8 @@
         "scope": [
           "$APPDATA/data/arquives",
           "$APPDATA/data/json",
-          "$APPDATA/data/arquives/*",
-          "$APPDATA/data/json/*"
+          "$APPDATA/data/arquives/**",
+          "$APPDATA/data/json/**"
         ]
       }
     },
