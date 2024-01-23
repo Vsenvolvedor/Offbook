@@ -33,10 +33,10 @@ export const Header = ({setIsModalActive}:Header) => {
         </h1>
         <ul>
           {
-            categories.map((categ) => {
+            categories.map((categ,index) => {
 
               return (
-                <li>
+                <li key={index}>
                   {categ}
                 </li>
               )
