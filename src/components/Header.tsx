@@ -21,7 +21,6 @@ export const Header = ({setIsModalActive}:Header) => {
     })
   }, [])
 
-
   return (
     <header>
       <div className='search-container'>

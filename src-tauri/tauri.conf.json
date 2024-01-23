@@ -24,6 +24,9 @@
       "dialog": {
         "open": true
       },
+      "path": {
+        "all": true
+      },
       "fs": {
         "copyFile": true,
         "createDir": true,
