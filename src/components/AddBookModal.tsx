@@ -2,19 +2,20 @@ import XMarkBlack from '../assets/x-mark-black.svg'
 import ConfirmIcon from '../assets/confirm-icon.svg'
 import TrashIcon from '../assets/trash-icon.svg'
 import '../styles/AddBookModal.css'
-import { ChangeEvent, useMemo, useRef, useState } from 'react'
+import { ChangeEvent, useContext, useMemo, useRef, useState } from 'react'
 import { open } from '@tauri-apps/api/dialog'
 import BookModalCategories from './BookModalCategories'
 import readingBookData, { bookDataPath } from '../helper/readBookData'
 import {createArquiveByBinary, createArquives} from '../helper/createArquives'
 import { BaseDirectory, writeFile } from '@tauri-apps/api/fs'
-import { BookData } from '../pages/Home'
+import { AppDataContext, BookData } from '../pages/Home'
 
 interface AddBookModal {
   setIsModalActive: (value:boolean) => void
 }
 
 const AddBookModal = ({setIsModalActive}:AddBookModal) => {
+  const {setBooks} = useContext(AppDataContext);
   const [name,setName] = useState<string>('');
   const [selectedCategories,setSelectedCategories] = useState<Array<string>>([]);
   const [bookPath, setBookPath] = useState<string | null | string[]>('');
@@ -71,8 +72,10 @@ const AddBookModal = ({setIsModalActive}:AddBookModal) => {
       const newData = JSON.parse(data);
       newData.push(book);
       await writeFile(bookDataPath, JSON.stringify(newData),{dir:BaseDirectory.AppData});
+      setBooks(newData);
     } else {
       await writeFile(bookDataPath, JSON.stringify([book]),{dir:BaseDirectory.AppData});
+      setBooks([book]);
     }
     setIsModalActive(false);
   }
