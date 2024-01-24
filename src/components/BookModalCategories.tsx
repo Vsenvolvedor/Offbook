@@ -1,24 +1,25 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import '../styles/AddBookModal.css'
 import SelectionIcon from '../assets/selection-icon.svg'
 import MoreIcon from '../assets/more-icon.svg'
 import XMarkWhite from '../assets/x-mark-white.svg'
 import { BaseDirectory, writeFile } from '@tauri-apps/api/fs'
 import readingCategoriesData, { categorieDataPath } from '../helper/readCategoryData'
+import { AppDataContext } from '../pages/Home'
 interface BookModalCategories {
   selectedCategories: string[]
   setSelectedCategories: (value:string[]) => void
 }
 
 const BookModalCategories = ({selectedCategories,setSelectedCategories}:BookModalCategories) => {
-  const [categories,setCategories] = useState<Array<string>>([]);
+  const {categories, setCategories} = useContext(AppDataContext);
   const [newCategorie, setNewCategorie] = useState<string>('');
 
   async function createCategorie() {
     if(newCategorie ===  '') return;
     const data = await readingCategoriesData();
     if(data) {
-      const parsedData = JSON.parse(data);
+      const parsedData:string[] = JSON.parse(data);
       parsedData.push(newCategorie);
       await writeFile(categorieDataPath,JSON.stringify(parsedData),{dir:BaseDirectory.AppData})
       setCategories(parsedData);
