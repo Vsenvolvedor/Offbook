@@ -3,23 +3,15 @@ import AddButton from '../assets/add-button.svg';
 import ImportIcon from '../assets/import-icon.svg';
 import ExportIcon from '../assets/export-icon.svg';
 import '../styles/Header.css';
-import { useEffect, useState } from 'react';
-import readingCategoriesData from '../helper/readCategoryData';
+import { useContext } from 'react';
+import { AppDataContext } from '../pages/Home';
 
 interface Header {
   setIsModalActive: (value:boolean) => void
 }
 
 export const Header = ({setIsModalActive}:Header) => {
-  const [categories, setCategories] = useState<string[]>([]);
-
-  useEffect(() => {
-    readingCategoriesData()
-    .then((data) => {
-      if(!data) return;
-      setCategories(JSON.parse(data));
-    })
-  }, [])
+  const {categories} = useContext(AppDataContext);;
 
   return (
     <header>
