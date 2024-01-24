@@ -5,15 +5,10 @@ import '../styles/AddBookModal.css'
 import { ChangeEvent, useMemo, useRef, useState } from 'react'
 import { open } from '@tauri-apps/api/dialog'
 import BookModalCategories from './BookModalCategories'
-
-type BookData = {
-  id: number
-  name: string
-  source: string
-  thumb: string
-  categories: string[] 
-  fixed: boolean
-}
+import readingBookData, { bookDataPath } from '../helper/readBookData'
+import {createArquiveByBinary, createArquives} from '../helper/createArquives'
+import { BaseDirectory, writeFile } from '@tauri-apps/api/fs'
+import { BookData } from '../pages/Home'
 
 interface AddBookModal {
   setIsModalActive: (value:boolean) => void
@@ -23,6 +18,7 @@ const AddBookModal = ({setIsModalActive}:AddBookModal) => {
   const [name,setName] = useState<string>('');
   const [selectedCategories,setSelectedCategories] = useState<Array<string>>([]);
   const [bookPath, setBookPath] = useState<string | null | string[]>('');
+  const [imageBinaryData, setImageBinaryData] = useState<FileReader | null>(null);
   const thumbImageRef = useRef<HTMLImageElement>(null);
   const aliasBookPath = useMemo(() => {
     if(typeof bookPath !== 'string') return null;
@@ -49,7 +45,36 @@ const AddBookModal = ({setIsModalActive}:AddBookModal) => {
     const { files } = e.target as HTMLInputElement;
     if(!files) return;
     const fileUrl = URL.createObjectURL(files[0]);
+    const fileReader = new FileReader();
+    fileReader.readAsArrayBuffer(files[0])
+    setImageBinaryData(fileReader);
     thumbImageRef.current ? thumbImageRef.current.src = fileUrl : null;
+  }
+
+  async function createBook() {
+    if(name ==  '') return;
+    if(typeof bookPath !== 'string' || bookPath === '') return;
+    if(!thumbImageRef.current) return;
+    if(!imageBinaryData) return;
+    const data = await readingBookData();
+    const source = await createArquives(name, bookPath);
+    const thumb = await createArquiveByBinary(name, imageBinaryData, 'jpg')
+    const book:BookData = {
+      id: Math.round(Math.random() * 10000),
+      name,
+      categories: selectedCategories,
+      source,
+      thumb,
+      fixed: false,
+    } 
+    if(data) {
+      const newData = JSON.parse(data);
+      newData.push(book);
+      await writeFile(bookDataPath, JSON.stringify(newData),{dir:BaseDirectory.AppData});
+    } else {
+      await writeFile(bookDataPath, JSON.stringify([book]),{dir:BaseDirectory.AppData});
+    }
+    setIsModalActive(false);
   }
 
   return (
@@ -76,7 +101,7 @@ const AddBookModal = ({setIsModalActive}:AddBookModal) => {
       </div>
       <ul className='modal-menu'>
         <li onClick={() => setIsModalActive(false)} ><img src={XMarkBlack} alt="" /></li>
-        <li><img src={ConfirmIcon} alt="" /></li>
+        <li onClick={() => createBook()}><img src={ConfirmIcon} alt="" /></li>
         <li><img src={TrashIcon} alt="" /></li>
       </ul>
     </div>
