@@ -1,3 +1,8 @@
+.container {
+  position: relative;
+  transition: .2s;
+}
+
 .book-container {
   display: block;
   width: 150px;
@@ -12,8 +17,7 @@
   cursor: pointer;
 }
 
-.book-container:hover {
-  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.185);
+.container:hover {
   transform: scale(1.1);
 }
 
@@ -23,7 +27,9 @@
   position: absolute;
   top: 0;
   right: 0;
+  z-index: 2;
 }
+
 
 .book-edit-container button {
   display: flex;
@@ -37,6 +43,11 @@
 
 .book-edit-container button:hover {
   border: 1px solid var(--orange-1);
+}
+
+.book-edit-container > button.fixed {
+  background-color: var(--orange-1);
+  border-color: var(--black-1);
 }
 
 .book-name {
