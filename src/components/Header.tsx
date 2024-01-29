@@ -1,10 +1,10 @@
-import SearchIcon from '../assets/search-icon.svg';
 import AddButton from '../assets/add-button.svg';
 import ImportIcon from '../assets/import-icon.svg';
 import ExportIcon from '../assets/export-icon.svg';
 import '../styles/Header.css';
 import { useContext } from 'react';
 import { AppDataContext } from '../pages/Home';
+import Search from './Search';
 
 interface Header {
   setIsModalActive: (value:boolean) => void
@@ -15,10 +15,7 @@ export const Header = ({setIsModalActive}:Header) => {
 
   return (
     <header>
-      <div className='search-container'>
-        <img id='search-button' src={SearchIcon} alt="Search button" />
-        <input type="search" name="" id="search-input" placeholder='Pesquise seu arquivo aqui' />
-      </div>
+      <Search />
       <div className='category-container'>
         <h1>
           Filtrar por categoria
