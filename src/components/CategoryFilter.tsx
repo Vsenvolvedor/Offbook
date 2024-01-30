@@ -7,16 +7,13 @@ interface CategoryFilter {
 }
 
 const CategoryFilter = ({category}:CategoryFilter) => {
-  const {books,setBooks} = useContext(AppDataContext);
+  const {books,setBooks, originalBooksData} = useContext(AppDataContext);
   const categRef = useRef<HTMLLIElement | null>(null);
-  const originalBooks = useMemo(()=>{
-    return books.map(book => book);
-  },[])
 
   function filterByCategory() {
     if(categRef.current?.classList.contains('categ-active')) {
       categRef.current?.classList.remove('categ-active');
-      setBooks(originalBooks);
+      setBooks(originalBooksData);
       return;
     };
     const filteredList = books.filter((book) => {

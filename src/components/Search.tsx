@@ -3,15 +3,12 @@ import SearchIcon from '../assets/search-icon.svg';
 import { AppDataContext } from '../pages/Home';
 
 const Search = () => {
-  const {books,setBooks} = useContext(AppDataContext);
+  const {books,setBooks, originalBooksData} = useContext(AppDataContext);
   const [searchText, setSearchText] = useState<string>('');
-  const originalBooks = useMemo(() => {
-    return books.map((book)=> book);
-  }, [])
 
   useEffect(() => {
     if(searchText === '') {
-      setBooks(originalBooks);
+      setBooks(originalBooksData);
       return;
     };
     const searchedBooks = books.filter((book) => {
