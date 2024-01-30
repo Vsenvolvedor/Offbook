@@ -17,6 +17,7 @@ export type BookData = {
 interface ContextTypes {
   categories: string[]
   books: BookData[] 
+  originalBooksData: BookData[]
   setCategories: (value:string[])=> void
   setBooks: (value:BookData[])=> void
 }
@@ -25,11 +26,13 @@ export const AppDataContext = React.createContext<ContextTypes>({
   categories: [''],
   setCategories: () => {},
   books: [],
-  setBooks: () => {}
+  setBooks: () => {},
+  originalBooksData: []
 });
 
 export const Home = () => {
   const [books, setBooks] = useState<BookData[]>([]);
+  const [originalBooksData, setOriginalBooksData] = useState<BookData[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [isModalActive, setIsModalActive] = useState<boolean>(false);
 
@@ -39,6 +42,7 @@ export const Home = () => {
       const dataCategories = await readingCategoriesData();
       if(dataBooks) {
         setBooks(JSON.parse(dataBooks));
+        setOriginalBooksData(JSON.parse(dataBooks));
       }
       if(dataCategories) {
         setCategories(JSON.parse(dataCategories));
@@ -53,7 +57,8 @@ export const Home = () => {
       categories,
       setCategories,
       books,
-      setBooks
+      setBooks,
+      originalBooksData
     }}>
       <div>
         <Header 
