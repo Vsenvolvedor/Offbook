@@ -5,6 +5,7 @@ import '../styles/Header.css';
 import { useContext } from 'react';
 import { AppDataContext } from '../pages/Home';
 import Search from './Search';
+import CategoryFilter from './CategoryFilter';
 
 interface Header {
   setIsModalActive: (value:boolean) => void
@@ -23,12 +24,7 @@ export const Header = ({setIsModalActive}:Header) => {
         <ul>
           {
             categories.map((categ,index) => {
-
-              return (
-                <li key={index}>
-                  {categ}
-                </li>
-              )
+              return <CategoryFilter key={index} category={categ} />
             })
           }
         </ul>

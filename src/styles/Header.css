@@ -97,5 +97,9 @@ header {
 
 .options-menu-container li:hover {
   background-color: var(--orange-1);
-
 }
+
+.categ-active {
+  color: var(--orange-1);
+}
+
