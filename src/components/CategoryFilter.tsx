@@ -1,4 +1,4 @@
-import { useContext, useMemo, useRef } from 'react'
+import { useContext, useRef } from 'react'
 import { AppDataContext } from '../pages/Home'
 import '../styles/Header.css';
 
