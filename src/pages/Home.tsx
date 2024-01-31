@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Header } from '../components/Header'
 import Books from '../components/Books'
-import AddBookModal from '../components/AddBookModal';
+import AddBookModal from '../components/BookModal';
 import readingBookData from '../helper/readBookData';
 import readingCategoriesData from '../helper/readCategoryData';
 

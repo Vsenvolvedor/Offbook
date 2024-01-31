@@ -1,20 +1,22 @@
 import XMarkBlack from '../assets/x-mark-black.svg'
 import ConfirmIcon from '../assets/confirm-icon.svg'
 import TrashIcon from '../assets/trash-icon.svg'
-import '../styles/AddBookModal.css'
-import { ChangeEvent, useContext, useMemo, useRef, useState } from 'react'
+import '../styles/BookModal.css'
+import { ChangeEvent, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { open } from '@tauri-apps/api/dialog'
 import BookModalCategories from './BookModalCategories'
 import readingBookData, { bookDataPath } from '../helper/readBookData'
 import {createArquiveByBinary, createArquives} from '../helper/createArquives'
 import { BaseDirectory, writeFile } from '@tauri-apps/api/fs'
 import { AppDataContext, BookData } from '../pages/Home'
+import loadingImage from '../helper/loadingImage'
 
 interface AddBookModal {
   setIsModalActive: (value:boolean) => void
+  bookDataForEdit?: BookData
 }
 
-const AddBookModal = ({setIsModalActive}:AddBookModal) => {
+const AddBookModal = ({setIsModalActive, bookDataForEdit}:AddBookModal) => {
   const {setBooks} = useContext(AppDataContext);
   const [name,setName] = useState<string>('');
   const [selectedCategories,setSelectedCategories] = useState<Array<string>>([]);
@@ -27,8 +29,25 @@ const AddBookModal = ({setIsModalActive}:AddBookModal) => {
     return separatedPath[separatedPath.length - 1];
   }, [bookPath]); 
   function handleName({target}:any) {
+    if(bookDataForEdit) return;
     setName(target.value);
   }
+
+  useEffect(() => {
+    if(bookDataForEdit) {
+      setName(bookDataForEdit.name);
+      setSelectedCategories(bookDataForEdit.categories);
+      setBookPath(bookDataForEdit.source);
+      loadingImage(bookDataForEdit).then(({imageUrl,imageBlob}) => {
+        if(!thumbImageRef.current) return;
+        thumbImageRef.current.src = imageUrl;
+        const fileReader = new FileReader();
+        fileReader.readAsArrayBuffer(imageBlob);
+        setImageBinaryData(fileReader);
+      });
+    }
+
+  },[])
 
   async function loadBookPath() {
     const filePath= await open({
@@ -58,6 +77,18 @@ const AddBookModal = ({setIsModalActive}:AddBookModal) => {
     if(!thumbImageRef.current) return;
     if(!imageBinaryData) return;
     const data = await readingBookData();
+    if(bookDataForEdit && data) {
+      const parsedData = JSON.parse(data)
+      const newData = parsedData.map((book:BookData) => {
+        if(book.id !== bookDataForEdit.id) return book;
+        book.categories = selectedCategories;
+        return book;
+      })
+      await writeFile(bookDataPath, JSON.stringify(newData),{dir:BaseDirectory.AppData});
+      setBooks(newData);
+      setIsModalActive(false);
+      return null;
+    };
     const source = await createArquives(name, bookPath);
     const thumb = await createArquiveByBinary(name, imageBinaryData, 'jpg')
     const book:BookData = {
@@ -79,7 +110,20 @@ const AddBookModal = ({setIsModalActive}:AddBookModal) => {
     }
     setIsModalActive(false);
   }
-
+  
+  async function deleteBook() {
+    const data = await readingBookData();
+    if(!bookDataForEdit || !data) return;
+    const parsedData = JSON.parse(data)
+    const newData = parsedData.filter((book:BookData) => {
+      if(book.id === bookDataForEdit.id) return false;
+      return true;
+    })
+    await writeFile(bookDataPath, JSON.stringify(newData),{dir:BaseDirectory.AppData});
+    setBooks(newData);
+    setIsModalActive(false);
+  };  
+  
   return (
     <div className='modal-container'>
       <div>
@@ -90,7 +134,7 @@ const AddBookModal = ({setIsModalActive}:AddBookModal) => {
         <div className='modal-inputs-container'>
           <h2>Arquivo:</h2>
           <span>{aliasBookPath}</span>
-          <button onClick={loadBookPath} className='modal-button'>Carregar</button>
+          {!bookDataForEdit && <button onClick={loadBookPath} className='modal-button'>Carregar</button>}
         </div>
         <BookModalCategories 
           selectedCategories={selectedCategories}
@@ -99,13 +143,13 @@ const AddBookModal = ({setIsModalActive}:AddBookModal) => {
       </div>
       <div>
         <img ref={thumbImageRef} className='modal-image' src="" />
-        <label className='modal-button center' htmlFor="thumb-image">Adicionar thumb</label>
+        {!bookDataForEdit && <label className='modal-button center' htmlFor="thumb-image">Adicionar thumb</label>}
         <input onChange={handleThumbImage} type="file" name="" id="thumb-image" accept="image/*" />
       </div>
       <ul className='modal-menu'>
         <li onClick={() => setIsModalActive(false)} ><img src={XMarkBlack} alt="" /></li>
         <li onClick={() => createBook()}><img src={ConfirmIcon} alt="" /></li>
-        <li><img src={TrashIcon} alt="" /></li>
+        {bookDataForEdit && <li onClick={() => deleteBook()}><img src={TrashIcon} alt="" /></li>}
       </ul>
     </div>
   )

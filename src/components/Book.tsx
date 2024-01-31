@@ -6,7 +6,7 @@ import { open } from '@tauri-apps/api/shell'
 import { useContext, useEffect, useState } from 'react'
 import { BaseDirectory, writeFile } from '@tauri-apps/api/fs'
 import { bookDataPath } from '../helper/readBookData'
-import AddBookModal from './AddBookModal'
+import AddBookModal from './BookModal'
 import loadingImage from '../helper/loadingImage'
 
 interface Book {
