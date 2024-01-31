@@ -5,5 +5,5 @@ export default async function loadingImage(data:BookData) {
   const imageUnit8ArrayData = await readBinaryFile(data.thumb,{dir: BaseDirectory.AppData});
   const imageBlob = new Blob([imageUnit8ArrayData.buffer]);
   const imageUrl = URL.createObjectURL(imageBlob);
-  return imageUrl;
+  return {imageUrl,imageBlob};
 };
