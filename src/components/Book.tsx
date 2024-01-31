@@ -4,8 +4,10 @@ import "../styles/Book.css"
 import { AppDataContext, BookData } from '../pages/Home'
 import { open } from '@tauri-apps/api/shell'
 import { useContext, useEffect, useState } from 'react'
-import { BaseDirectory, readBinaryFile, writeFile } from '@tauri-apps/api/fs'
+import { BaseDirectory, writeFile } from '@tauri-apps/api/fs'
 import { bookDataPath } from '../helper/readBookData'
+import AddBookModal from './AddBookModal'
+import loadingImage from '../helper/loadingImage'
 
 interface Book {
   data: BookData
@@ -14,16 +16,10 @@ interface Book {
 const Book = ({data}:Book) => {
   const {books, setBooks} = useContext(AppDataContext);
   const [thumbUrl, setThumbUrl] = useState<string>('');
+  const [isModalActive, setIsModalActive] = useState<boolean>(false);
 
   useEffect(() => {
-    async function loadingImage() {
-      const imageUnit8ArrayData = await readBinaryFile(data.thumb,{dir: BaseDirectory.AppData});
-      const imageBlob = new Blob([imageUnit8ArrayData.buffer]);
-      const imageUrl = URL.createObjectURL(imageBlob);
-      setThumbUrl(imageUrl);
-    };
-
-    loadingImage();
+    loadingImage(data).then(imageUrl => setThumbUrl(imageUrl));
   },[]);
 
   async function fixArquive() {
@@ -42,20 +38,23 @@ const Book = ({data}:Book) => {
   };
 
   return (
-    <li className='container'>
-      <a onClick={openArquive} className='book-container'>
-        <img className='book-image' src={thumbUrl} alt="Sem Capa" />
-      </a>
-      <div className='book-edit-container'>
-          <button onClick={fixArquive} className={data.fixed ? 'fixed' : ''}>
-            <img src={FixIcon}/>
-          </button>
-          <button>
-            <img src={EditIcon}/>
-          </button>
-        </div>
-      <h2 className='book-name'>{data.name}</h2>
-    </li>
+    <>
+      <li className='container'>
+        <a onClick={openArquive} className='book-container'>
+          <img className='book-image' src={thumbUrl} alt="Sem Capa" />
+        </a>
+        <div className='book-edit-container'>
+            <button onClick={fixArquive} className={data.fixed ? 'fixed' : ''}>
+              <img src={FixIcon}/>
+            </button>
+            <button onClick={() => setIsModalActive(true)}>
+              <img src={EditIcon}/>
+            </button>
+          </div>
+        <h2 className='book-name'>{data.name}</h2>
+      </li>
+      {isModalActive && <AddBookModal setIsModalActive={setIsModalActive} bookDataForEdit={data} />}
+    </>
   )
 }
 
