@@ -19,7 +19,7 @@ const Book = ({data}:Book) => {
   const [isModalActive, setIsModalActive] = useState<boolean>(false);
 
   useEffect(() => {
-    loadingImage(data).then(imageUrl => setThumbUrl(imageUrl));
+    loadingImage(data).then(({imageUrl}) => setThumbUrl(imageUrl));
   },[]);
 
   async function fixArquive() {
