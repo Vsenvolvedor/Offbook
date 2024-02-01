@@ -17,7 +17,7 @@ interface AddBookModal {
 }
 
 const AddBookModal = ({setIsModalActive, bookDataForEdit}:AddBookModal) => {
-  const {setBooks} = useContext(AppDataContext);
+  const {setBooks, setOriginalBooksData} = useContext(AppDataContext);
   const [name,setName] = useState<string>('');
   const [selectedCategories,setSelectedCategories] = useState<Array<string>>([]);
   const [bookPath, setBookPath] = useState<string | null | string[]>('');
@@ -86,6 +86,7 @@ const AddBookModal = ({setIsModalActive, bookDataForEdit}:AddBookModal) => {
       })
       await writeFile(bookDataPath, JSON.stringify(newData),{dir:BaseDirectory.AppData});
       setBooks(newData);
+      setOriginalBooksData(newData);
       setIsModalActive(false);
       return null;
     };
@@ -104,9 +105,11 @@ const AddBookModal = ({setIsModalActive, bookDataForEdit}:AddBookModal) => {
       newData.push(book);
       await writeFile(bookDataPath, JSON.stringify(newData),{dir:BaseDirectory.AppData});
       setBooks(newData);
+      setOriginalBooksData(newData);
     } else {
       await writeFile(bookDataPath, JSON.stringify([book]),{dir:BaseDirectory.AppData});
       setBooks([book]);
+      setOriginalBooksData([book]);
     }
     setIsModalActive(false);
   }
@@ -121,6 +124,7 @@ const AddBookModal = ({setIsModalActive, bookDataForEdit}:AddBookModal) => {
     })
     await writeFile(bookDataPath, JSON.stringify(newData),{dir:BaseDirectory.AppData});
     setBooks(newData);
+    setOriginalBooksData(newData);
     setIsModalActive(false);
   };  
   

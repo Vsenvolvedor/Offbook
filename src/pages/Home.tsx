@@ -18,6 +18,7 @@ interface ContextTypes {
   categories: string[]
   books: BookData[] 
   originalBooksData: BookData[]
+  setOriginalBooksData: (value:BookData[]) => void
   setCategories: (value:string[])=> void
   setBooks: (value:BookData[])=> void
 }
@@ -27,7 +28,8 @@ export const AppDataContext = React.createContext<ContextTypes>({
   setCategories: () => {},
   books: [],
   setBooks: () => {},
-  originalBooksData: []
+  originalBooksData: [],
+  setOriginalBooksData: () => {}
 });
 
 export const Home = () => {
@@ -58,7 +60,8 @@ export const Home = () => {
       setCategories,
       books,
       setBooks,
-      originalBooksData
+      originalBooksData,
+      setOriginalBooksData
     }}>
       <div>
         <Header 
