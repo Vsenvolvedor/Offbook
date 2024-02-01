@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import SearchIcon from '../assets/search-icon.svg';
 import { AppDataContext } from '../pages/Home';
 
