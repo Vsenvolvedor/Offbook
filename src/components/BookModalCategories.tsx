@@ -53,7 +53,7 @@ const BookModalCategories = ({selectedCategories,setSelectedCategories}:BookModa
   }
 
   function removeCategorie(index:number) {
-    const newCategorie = selectedCategories.filter((i,oldIndex) =>  oldIndex !== index);
+    const newCategorie = selectedCategories.filter((_i,oldIndex) =>  oldIndex !== index);
     setSelectedCategories(newCategorie);
   }
 
