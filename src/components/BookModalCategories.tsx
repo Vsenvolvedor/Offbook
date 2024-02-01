@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import '../styles/AddBookModal.css'
+import '../styles/BookModal.css'
 import SelectionIcon from '../assets/selection-icon.svg'
 import MoreIcon from '../assets/more-icon.svg'
 import XMarkWhite from '../assets/x-mark-white.svg'
