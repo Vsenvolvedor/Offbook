@@ -1,6 +1,7 @@
 .container {
   position: relative;
   transition: .2s;
+  max-width: 150px;
 }
 
 .book-container {
