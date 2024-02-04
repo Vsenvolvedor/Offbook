@@ -1,6 +1,7 @@
 import XMarkBlack from '../assets/x-mark-black.svg'
 import ConfirmIcon from '../assets/confirm-icon.svg'
 import TrashIcon from '../assets/trash-icon.svg'
+import PasteIcon from '../assets/paste-icon.svg'
 import '../styles/BookModal.css'
 import { ChangeEvent, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { open } from '@tauri-apps/api/dialog'
@@ -10,7 +11,7 @@ import {createArquiveByBinary, createArquives} from '../helper/createArquives'
 import { BaseDirectory, writeFile } from '@tauri-apps/api/fs'
 import { AppDataContext, BookData } from '../pages/Home'
 import loadingImage from '../helper/loadingImage'
-
+import { readImageBinary } from 'tauri-plugin-clipboard-api'
 interface AddBookModal {
   setIsModalActive: (value:boolean) => void
   bookDataForEdit?: BookData
@@ -127,6 +128,21 @@ const AddBookModal = ({setIsModalActive, bookDataForEdit}:AddBookModal) => {
     setOriginalBooksData(newData);
     setIsModalActive(false);
   };  
+
+  async function pasteBookImage() {
+    try{
+      const imageBlob = await readImageBinary('Blob');
+      if(!(imageBlob instanceof Blob)) return;
+      const imageUrl = URL.createObjectURL(imageBlob);
+      if(!thumbImageRef.current) return;
+      thumbImageRef.current.src = imageUrl;
+      const fileReader = new FileReader();
+      fileReader.readAsArrayBuffer(imageBlob);
+      setImageBinaryData(fileReader);
+    } catch(err) {
+      console.log(err)
+    }
+  }
   
   return (
     <div className='modal-container'>
@@ -153,10 +169,12 @@ const AddBookModal = ({setIsModalActive, bookDataForEdit}:AddBookModal) => {
       <ul className='modal-menu'>
         <li onClick={() => setIsModalActive(false)} ><img src={XMarkBlack} alt="" /></li>
         <li onClick={() => createBook()}><img src={ConfirmIcon} alt="" /></li>
+        {!bookDataForEdit && <li onClick={() => pasteBookImage()}><img src={PasteIcon} alt="" /></li>}
         {bookDataForEdit && <li onClick={() => deleteBook()}><img src={TrashIcon} alt="" /></li>}
       </ul>
     </div>
   )
 }
+
 
 export default AddBookModal
