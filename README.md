@@ -1,6 +1,6 @@
 # Offbook
 
-Offbook é um aplicativo desktop desenvolvido com Tauri, React e TypeScript. Ele fornece uma interface intuitiva para organizarPDFs de forma conveniente, permitindo aos usuários uma experiência melhorada na visualização de seus documentos.
+Offbook é um aplicativo desktop desenvolvido com **Tauri**, **React** e **TypeScript**. Ele fornece uma interface intuitiva para organizar PDFs de forma conveniente, permitindo aos usuários uma experiência melhorada na visualização de seus documentos.
 
 ## Funcionalidades Principais
 - **Interface Intuitiva**: Uma interface de usuário simples e amigável para facilitar a navegação e a organização de seus PDFs.
