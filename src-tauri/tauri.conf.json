@@ -39,6 +39,9 @@
           "$APPDATA/data/arquives/**",
           "$APPDATA/data/json/**"
         ]
+      },
+      "clipboard": {
+        "readText": true
       }
     },
     "bundle": {
